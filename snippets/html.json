@@ -1,0 +1,9 @@
+{
+    "Insert SVG Icon": {
+        "prefix": "svgIcon",
+        "body": [
+            "<img src='assets/icons/${2:iconType}/${1:iconName}.svg' alt='${1:iconName} icon' width='${3:24}' height='${4:24}' />"
+        ],
+        "description": "Insert an SVG icon for HTML."
+    }
+}

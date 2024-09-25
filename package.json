@@ -2,14 +2,15 @@
     "name": "svg-icon-extension",
     "displayName": "svg-icon-extension",
     "description": "For easy SVG icon access from multiple sources",
-    "publisher": "Linxford - Yelodev",
-    "version": "1.0.0",
+    "publisher": "Linxford",
+    "version": "1.2.0",
     "icon": "assets/icon.png",
     "engines": {
         "vscode": "^1.93.0"
     },
     "categories": [
-        "Other", "Snippets"
+        "Other",
+        "Snippets"
     ],
     "activationEvents": [
         "onCommand:svg-icons-extension.searchIcons",
@@ -36,23 +37,61 @@
         "languages": [
             {
                 "id": "html",
-                "aliases": ["HTML", "html"],
-                "extensions": [".html"]
+                "aliases": [
+                    "HTML",
+                    "html"
+                ],
+                "extensions": [
+                    ".html"
+                ]
             },
             {
                 "id": "dart",
-                "aliases": ["Dart", "dart"],
-                "extensions": [".dart"]
+                "aliases": [
+                    "Dart",
+                    "dart"
+                ],
+                "extensions": [
+                    ".dart"
+                ]
             },
             {
                 "id": "typescript",
-                "aliases": ["TypeScript", "typescript"],
-                "extensions": [".ts"]
+                "aliases": [
+                    "TypeScript",
+                    "typescript"
+                ],
+                "extensions": [
+                    ".ts"
+                ]
             },
             {
                 "id": "javascript",
-                "aliases": ["JavaScript", "javascript"],
-                "extensions": [".js"]
+                "aliases": [
+                    "JavaScript",
+                    "javascript"
+                ],
+                "extensions": [
+                    ".js"
+                ]
+            }
+        ],
+        "snippets": [
+            {
+                "language": "dart",
+                "path": "./snippets/dart.json"
+            },
+            {
+                "language": "html",
+                "path": "./snippets/html.json"
+            },
+            {
+                "language": "typescript",
+                "path": "./snippets/typescript.json"
+            },
+            {
+                "language": "javascript",
+                "path": "./snippets/javascript.json"
             }
         ]
     },
@@ -71,6 +110,7 @@
     "devDependencies": {
         "@types/mocha": "^10.0.7",
         "@types/node": "20.x",
+        "@types/svgo": "^2.6.4",
         "@types/vscode": "^1.93.0",
         "@typescript-eslint/eslint-plugin": "^8.3.0",
         "@typescript-eslint/parser": "^8.3.0",
@@ -83,6 +123,7 @@
         "axios": "^1.7.7",
         "cheerio": "^1.0.0-rc.10",
         "fs": "^0.0.1-security",
-        "path": "^0.12.7"
+        "path": "^0.12.7",
+        "svgo": "^3.3.2"
     }
 }

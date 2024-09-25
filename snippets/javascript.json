@@ -1,0 +1,13 @@
+{
+    "Insert SVG Icon": {
+        "prefix": "svgIcon",
+        "body": [
+            "const ${1:IconName}Icon = () => (",
+            "  <img src='assets/icons/${2:iconType}/${1:iconName}.svg' alt='${1:iconName} icon' width='${3:24}' height='${4:24}' />",
+            ");",
+            "",
+            "export default ${1:IconName}Icon;"
+        ],
+        "description": "Insert an SVG icon in a React component using JavaScript."
+    }
+}

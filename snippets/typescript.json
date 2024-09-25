@@ -1,0 +1,14 @@
+{
+    "Insert SVG Icon": {
+        "prefix": "svgIcon",
+        "body": [
+            "import React from 'react';",
+            "import SvgIcon from 'assets/icons/${2:iconType}/${1:iconName}.svg';",
+            "",
+            "export const ${1:IconName}Icon: React.FC = () => (",
+            "  <img src={SvgIcon} alt='${1:iconName}' width={${3:24}} height={${4:24}} />",
+            ");"
+        ],
+        "description": "Insert an SVG icon in a React component using TypeScript."
+    }
+}

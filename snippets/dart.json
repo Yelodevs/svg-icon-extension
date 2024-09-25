@@ -1,0 +1,21 @@
+{
+    "Insert SVG Icon": {
+        "prefix": "svgIcon",
+        "body": [
+            "import 'package:flutter_svg/flutter_svg.dart';",
+            "import 'package:svgicons/svgicons.dart';",
+            "",
+            "class ${1:IconName}Icon extends StatelessWidget {",
+            "  @override",
+            "  Widget build(BuildContext context) {",
+            "    return SvgIcon(",
+            "      'assets/icons/${2:iconType}/${1:iconName}.svg',",
+            "      color: Colors.${3:black},",
+            "      size: ${4:24.0},",
+            "    );",
+            "  }",
+            "}"
+        ],
+        "description": "Insert an SVG Icon widget for Flutter using SvgIcon."
+    }
+}
