@@ -57,7 +57,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Yelodevs/svg-icon-extension.git"  // Change this to your repository URL
+        "url": "https://github.com/Yelodevs/svg-icon-extension.git"
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
