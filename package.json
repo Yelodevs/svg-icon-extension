@@ -1,0 +1,87 @@
+{
+    "name": "svg-icon-extension",
+    "displayName": "svg-icon-extension",
+    "description": "For easy SVG icon access from multiple sources",
+    "publisher": "Linxford - Yelodev",
+    "version": "0.0.2",
+    "engines": {
+        "vscode": "^1.93.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:svg-icons-extension.searchIcons",
+        "onLanguage:html",
+        "onLanguage:dart",
+        "onLanguage:typescript",
+        "onLanguage:javascript"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "svg-icons-extension.searchIcons",
+                "title": "Search SVG Icons"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "svg-icons-extension.searchIcons",
+                "key": "ctrl+shift+i",
+                "when": "editorTextFocus"
+            }
+        ],
+        "languages": [
+            {
+                "id": "html",
+                "aliases": ["HTML", "html"],
+                "extensions": [".html"]
+            },
+            {
+                "id": "dart",
+                "aliases": ["Dart", "dart"],
+                "extensions": [".dart"]
+            },
+            {
+                "id": "typescript",
+                "aliases": ["TypeScript", "typescript"],
+                "extensions": [".ts"]
+            },
+            {
+                "id": "javascript",
+                "aliases": ["JavaScript", "javascript"],
+                "extensions": [".js"]
+            }
+        ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Yelodevs/svg-icon-extension.git"  // Change this to your repository URL
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.7",
+        "@types/node": "20.x",
+        "@types/vscode": "^1.93.0",
+        "@typescript-eslint/eslint-plugin": "^8.3.0",
+        "@typescript-eslint/parser": "^8.3.0",
+        "@vscode/test-cli": "^0.0.10",
+        "@vscode/test-electron": "^2.4.1",
+        "eslint": "^9.9.1",
+        "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "axios": "^1.7.7",
+        "cheerio": "^1.0.0-rc.10",
+        "fs": "^0.0.1-security",
+        "path": "^0.12.7"
+    }
+}
