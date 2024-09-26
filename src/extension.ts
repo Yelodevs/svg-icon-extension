@@ -155,7 +155,7 @@ function updatePubspecWithIconDirectories() {
         return;
     }
 
-    const pubspecPath = path.join(workspaceFolder, 'pubspec.yaml'); // Directly point to the root
+    const pubspecPath = path.join(workspaceFolder, 'pubspec.yaml');
 
     console.log(`Looking for pubspec.yaml at: ${pubspecPath}`);
 
@@ -163,29 +163,38 @@ function updatePubspecWithIconDirectories() {
         const fileContent = fs.readFileSync(pubspecPath, 'utf8');
         const data = yaml.load(fileContent) as any;
 
-        if (!data.assets) {
-            data.assets = [];
+        // Check if assets section already exists
+        if (!data.flutter) {
+            data.flutter = {};
+        }
+        if (!data.flutter.assets) {
+            data.flutter.assets = [];
         }
 
         // Define icon directories to add
         const iconDirectories = Object.values(IconType).map(type => `assets/icons/${type.toLowerCase()}/`);
 
         // Add icon directories if they don't already exist
+        let updated = false;
         iconDirectories.forEach(dir => {
-            if (!data.assets.includes(dir)) {
-                data.assets.push(dir);
+            if (!data.flutter.assets.includes(dir)) {
+                data.flutter.assets.push(dir);
+                updated = true;
             }
         });
 
-        // Write back to pubspec.yaml
-        const yamlStr = yaml.dump(data);
-        fs.writeFileSync(pubspecPath, yamlStr, 'utf8');
-        vscode.window.showInformationMessage('pubspec.yaml updated with new icon directories!');
+        // Write back to pubspec.yaml only if changes were made
+        if (updated) {
+            const yamlStr = yaml.dump(data);
+            fs.writeFileSync(pubspecPath, yamlStr, 'utf8');
+            vscode.window.showInformationMessage('pubspec.yaml updated with new icon directories!');
+        } else {
+            console.log('No changes needed in pubspec.yaml');
+        }
     } else {
         vscode.window.showErrorMessage('pubspec.yaml not found!');
     }
 }
-
 
 // Copy an icon from the bundled assets to the required directory
 function copyIconFromBundle(iconType: string, iconName: string, targetPath: string, basePath: string) {
