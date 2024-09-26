@@ -1,14 +1,29 @@
 
----
-
-### Changelog (CHANGELOG.md)
-
-```markdown
-# Changelog
+# SVG Icon Extension Changelog
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.3] - 2024-09-25
+## [1.0.04] - 2024-09-26
+
+### Added
+- Autocomplete: Type `:iconType` (e.g., `solid:iconName`) to get autocompletion and preview for icons.
+- Feature to browse and search SVG icons by type (outline, duotone, colored, solid)
+- Icon preview functionality in the selection menu
+- Management of icon assets in Flutter projects
+- Automatically creates icon directories in the Flutter project's `assets/icons` folder.
+- Updates `pubspec.yaml` to include new icon directories for assets.
+- Easy insertion of SVG icons into code with previews.
+
+
+### Changed
+- Improved icon preview by hiding file paths and showing only the icon in the selection menu
+- Corrected the path resolution for `pubspec.yaml` to point to the root of the project.
+- Ensured the icon paths are correctly formatted for different languages (Dart, HTML, JavaScript).
+
+### Fixed
+- Issue with duplicate entries being added to pubspec.yaml
+
+## [1.0.03] - 2024-09-25
 
 ### Added
 - Support for accessing local SVG icons in multiple categories: outline, duotone, colored, solid.
@@ -18,13 +33,13 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Removed web scraping functionality for external SVG icons.
 
-## [0.0.2] - 2024-09-20
+## [1.0.02] - 2024-09-20
 
 ### Added
 - Web scraping functionality for fetching SVG icons from external sources.
 - Basic snippet support for HTML and JavaScript.
 
-## [0.0.1] - 2024-09-15
+## [1.0.01] - 2024-09-15
 
 ### Added
 - Initial release with basic support for searching SVG icons.
