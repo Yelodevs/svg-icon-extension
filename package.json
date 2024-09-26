@@ -94,6 +94,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.4",
+        "@types/js-yaml": "^4.0.9",
         "@types/mocha": "^10.0.7",
         "@types/node": "20.x",
         "@types/vscode": "^1.93.0",
@@ -106,7 +107,7 @@
     },
     "dependencies": {
         "cheerio": "^1.0.0-rc.10",
-        
+        "fs-extra": "^11.2.0",
         "path": "^0.12.7"
     }
 }
