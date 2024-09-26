@@ -390,7 +390,6 @@
 
 
 //? auto dir create
-
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -407,8 +406,8 @@ enum IconType {
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('svg-icons-extension.searchIcons', async () => {
 
-        // Ensure icon directories are created
-        const iconBasePath = ensureIconDirectories(context.extensionPath);
+        // Ensure icon directories are created in the Flutter project, not the extension directory
+        const iconBasePath = ensureIconDirectories();
 
         // Prompt the user for icon type
         const iconType = await vscode.window.showQuickPick(
@@ -433,11 +432,6 @@ export function activate(context: vscode.ExtensionContext) {
         const iconPath = path.join('assets', 'icons', iconType.toLowerCase(), `${iconName}.svg`);
         const fullIconPath = path.join(iconBasePath, iconType.toLowerCase(), `${iconName}.svg`);
 
-        // Check if the icon exists; if not, create a placeholder file (for demonstration purposes)
-        if (!fs.existsSync(fullIconPath)) {
-            createPlaceholderIcon(fullIconPath);
-        }
-
         // Insert the relative icon path into the active editor
         const editor = vscode.window.activeTextEditor;
         if (editor) {
@@ -454,8 +448,15 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // Ensure the required icon directories exist, create them if necessary
-function ensureIconDirectories(basePath: string): string {
-    const iconDirPath = path.join(basePath, 'assets', 'icons');
+function ensureIconDirectories(): string {
+    // Get the root path of the current Flutter project
+    const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri.fsPath : undefined;
+    if (!workspaceFolder) {
+        vscode.window.showErrorMessage('No workspace folder found!');
+        return '';
+    }
+
+    const iconDirPath = path.join(workspaceFolder, 'assets', 'icons');
 
     // Create directories for each icon type if they don't exist
     Object.values(IconType).forEach(type => {
@@ -466,16 +467,6 @@ function ensureIconDirectories(basePath: string): string {
     });
 
     return iconDirPath;
-}
-
-// Create a simple placeholder SVG icon file if the icon doesn't exist
-function createPlaceholderIcon(filePath: string) {
-    const placeholderSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-        <rect width="100" height="100" fill="gray"/>
-        <text x="10" y="50" font-size="12" fill="white">Placeholder</text>
-    </svg>`;
-
-    fs.writeFileSync(filePath, placeholderSvg, 'utf8');
 }
 
 // Deactivate function

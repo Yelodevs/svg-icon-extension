@@ -1,9 +1,9 @@
 {
     "name": "svg-icon-extension",
-    "displayName": "svg-icon-extension",
-    "description": "For easy SVG icon access from multiple sources",
+    "displayName": "SVG Icon Extension",
+    "description": "Easily access and insert SVG icons from multiple sources.",
     "publisher": "Linxford",
-    "version": "1.2.0",
+    "version": "1.0.3",
     "icon": "assets/icon.png",
     "engines": {
         "vscode": "^1.93.0"
@@ -99,6 +99,13 @@
         "type": "git",
         "url": "https://github.com/Yelodevs/svg-icon-extension.git"
     },
+    "files": [
+        "out/**/*",
+        "assets/**/*"
+    ],
+    "assets": [
+        "assets/icons/**/*"
+    ],
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
@@ -117,7 +124,8 @@
         "@vscode/test-cli": "^0.0.10",
         "@vscode/test-electron": "^2.4.1",
         "eslint": "^9.9.1",
-        "typescript": "^5.5.4"
+        "typescript": "^5.5.4",
+        "fs-extra": "^11.1.0"
     },
     "dependencies": {
         "axios": "^1.7.7",
