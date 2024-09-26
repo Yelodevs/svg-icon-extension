@@ -1,9 +1,9 @@
 {
     "name": "svg-icon-extension",
     "displayName": "SVG Icon Extension",
-    "description": "Easily access and insert SVG icons from multiple sources.",
+    "description": "Easily search and insert SVG icons from multiple sources.",
     "publisher": "Linxford",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icon": "assets/icon.png",
     "engines": {
         "vscode": "^1.93.0"
@@ -13,7 +13,6 @@
         "Snippets"
     ],
     "activationEvents": [
-        "onCommand:svg-icons-extension.searchIcons",
         "onLanguage:html",
         "onLanguage:dart",
         "onLanguage:typescript",
@@ -75,24 +74,6 @@
                     ".js"
                 ]
             }
-        ],
-        "snippets": [
-            {
-                "language": "dart",
-                "path": "./snippets/dart.json"
-            },
-            {
-                "language": "html",
-                "path": "./snippets/html.json"
-            },
-            {
-                "language": "typescript",
-                "path": "./snippets/typescript.json"
-            },
-            {
-                "language": "javascript",
-                "path": "./snippets/javascript.json"
-            }
         ]
     },
     "repository": {
@@ -103,9 +84,6 @@
         "out/**/*",
         "assets/**/*"
     ],
-    "assets": [
-        "assets/icons/**/*"
-    ],
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
@@ -115,23 +93,20 @@
         "test": "vscode-test"
     },
     "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
         "@types/mocha": "^10.0.7",
         "@types/node": "20.x",
-        "@types/svgo": "^2.6.4",
         "@types/vscode": "^1.93.0",
         "@typescript-eslint/eslint-plugin": "^8.3.0",
         "@typescript-eslint/parser": "^8.3.0",
         "@vscode/test-cli": "^0.0.10",
         "@vscode/test-electron": "^2.4.1",
         "eslint": "^9.9.1",
-        "typescript": "^5.5.4",
-        "fs-extra": "^11.1.0"
+        "typescript": "^5.5.4"
     },
     "dependencies": {
-        "axios": "^1.7.7",
         "cheerio": "^1.0.0-rc.10",
-        "fs": "^0.0.1-security",
-        "path": "^0.12.7",
-        "svgo": "^3.3.2"
+        
+        "path": "^0.12.7"
     }
 }

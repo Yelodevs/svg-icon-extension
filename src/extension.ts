@@ -10,10 +10,15 @@
 //     Solid = 'solid'
 // }
 
-// // Main function to activate extension
+// // Main function to activate the extension
 // export function activate(context: vscode.ExtensionContext) {
+//     console.log('SVG Icon Extension activated.');
 
 //     let disposable = vscode.commands.registerCommand('svg-icons-extension.searchIcons', async () => {
+//         console.log('Search Icons command executed.');
+
+//         // Ensure icon directories are created
+//         const iconBasePath = ensureIconDirectories(context.extensionPath);
 
 //         // Prompt the user for icon type
 //         const iconType = await vscode.window.showQuickPick(
@@ -35,15 +40,12 @@
 //         }
 
 //         // Construct the icon path based on the type and name
-//         const iconPath = path.join('assets', 'icons', iconType, `${iconName}.svg`);
+//         const iconPath = path.join('assets', 'icons', iconType.toLowerCase(), `${iconName}.svg`);
+//         const fullIconPath = path.join(iconBasePath, iconType.toLowerCase(), `${iconName}.svg`);
 
-//         // Full path to check if the file exists
-//         const fullPath = path.join(context.extensionPath, iconPath);
-
-//         // Check if the icon exists
-//         if (!fs.existsSync(fullPath)) {
-//             vscode.window.showErrorMessage(`Icon '${iconName}' not found in the '${iconType}' folder.`);
-//             return;
+//         // Check if the icon exists; if not, copy it from the bundled icons
+//         if (!fs.existsSync(fullIconPath)) {
+//             copyIconFromBundle(iconType.toLowerCase(), iconName, fullIconPath, context.extensionPath);
 //         }
 
 //         // Insert the relative icon path into the active editor
@@ -61,338 +63,51 @@
 //     context.subscriptions.push(disposable);
 // }
 
-// // Deactivate function
-// export function deactivate() {}
-
-
-// updates added
-
-// import * as vscode from 'vscode';
-// import * as path from 'path';
-// import * as fs from 'fs';
-// import axios from 'axios'; // For web scraping
-// import { optimize } from 'svgo'; // For SVG optimization
-
-// // Enum for different icon types and packs
-// enum IconType {
-//     Outline = 'outline',
-//     Duotone = 'duotone',
-//     Colored = 'colored',
-//     Solid = 'solid'
-// }
-
-// enum IconPack {
-//     Material = 'material',
-//     FontAwesome = 'fontawesome',
-//     Feather = 'feather',
-//     Custom = 'custom' // For external or custom icon packs
-// }
-
-// // Main function to activate the extension
-// export function activate(context: vscode.ExtensionContext) {
-//     let disposable = vscode.commands.registerCommand('svg-icons-extension.searchIcons', async () => {
-
-//         // Ensure icon directories are created
-//         const iconBasePath = ensureIconDirectories(context.extensionPath);
-
-//         // Choose the icon pack first
-//         const iconPack = await vscode.window.showQuickPick(
-//             Object.keys(IconPack),
-//             { placeHolder: 'Choose an icon pack (Material, FontAwesome, Feather, etc.)' }
-//         );
-
-//         if (!iconPack) return; // User cancelled
-
-//         // Choose the icon type
-//         const iconType = await vscode.window.showQuickPick(
-//             Object.keys(IconType),
-//             { placeHolder: 'Choose an icon type (outline, duotone, colored, solid)' }
-//         );
-
-//         if (!iconType) return; // User cancelled
-
-//         // Prompt the user for icon name
-//         const iconName = await vscode.window.showInputBox({
-//             placeHolder: 'Enter the icon name (e.g., user, home, camera)',
-//         });
-
-//         if (!iconName) return; // User cancelled
-
-//         // Show icon previews (by loading icons and creating previews)
-//         const fullIconPath = path.join(iconBasePath, iconPack.toLowerCase(), iconType.toLowerCase(), `${iconName}.svg`);
-//         if (!fs.existsSync(fullIconPath)) {
-//             vscode.window.showErrorMessage(`Icon '${iconName}' not found in the selected pack!`);
-//             return;
-//         }
-
-//         // Load icon preview
-//         const iconPreview = createIconPreview(fullIconPath);
-
-//         // Customize the icon (color, size, etc.)
-//         const customAttributes = await customizeIcon();
-
-//         // Insert the relative path automatically
-//         const iconPath = path.relative(vscode.workspace.rootPath || '', fullIconPath);
-
-//         // Insert into the editor
-//         const editor = vscode.window.activeTextEditor;
-//         if (editor) {
-//             editor.edit(editBuilder => {
-//                 editor.selections.forEach(selection => {
-//                     editBuilder.replace(selection, `<img src="${iconPath}" ${customAttributes}/>`); // Insert the path with customization
-//                 });
-//             });
-//             vscode.window.showInformationMessage(`Icon inserted with customization!`);
-//         }
-//     });
-
-//     context.subscriptions.push(disposable);
-// }
-
 // // Ensure the required icon directories exist, create them if necessary
 // function ensureIconDirectories(basePath: string): string {
 //     const iconDirPath = path.join(basePath, 'assets', 'icons');
-//     Object.values(IconPack).forEach(pack => {
-//         Object.values(IconType).forEach(type => {
-//             const dirPath = path.join(iconDirPath, pack.toLowerCase(), type.toLowerCase());
-//             if (!fs.existsSync(dirPath)) {
-//                 fs.mkdirSync(dirPath, { recursive: true });
-//             }
-//         });
+
+//     // Create directories for each icon type if they don't exist
+//     Object.values(IconType).forEach(type => {
+//         const dirPath = path.join(iconDirPath, type);
+//         if (!fs.existsSync(dirPath)) {
+//             fs.mkdirSync(dirPath, { recursive: true });
+//         }
 //     });
+
+//     // Flutter-specific directories
+//     const flutterAssetsPath = path.join(basePath, 'assets', 'icons');
+//     if (!fs.existsSync(flutterAssetsPath)) {
+//         fs.mkdirSync(flutterAssetsPath, { recursive: true });
+//     }
 //     return iconDirPath;
 // }
 
-// // Fetch the icon from the web (external sources)
-// async function fetchIconFromWeb(pack: string, iconName: string, iconType: string): Promise<string> {
-//     const iconUrl = `https://example.com/icons/${pack}/${iconType}/${iconName}.svg`;
+// // Copy an icon from the bundled assets to the required directory
+// function copyIconFromBundle(iconType: string, iconName: string, targetPath: string, basePath: string) {
+//     const sourcePath = path.join(basePath, 'assets', 'bundle', iconType, `${iconName}.svg`);
 
-//     try {
-//         const response = await axios.get(iconUrl);
-//         const iconData = response.data;
-
-//         // Save the icon data to the appropriate local directory
-//         const iconPath = path.join('assets', 'icons', pack, iconType, `${iconName}.svg`);
-//         fs.writeFileSync(iconPath, iconData, 'utf8');
-
-//         return iconPath;
-//     } catch (error) {
-//         const errorMessage = (error as Error).message;
-//         vscode.window.showErrorMessage(`Failed to fetch icon: ${errorMessage}`);
-//         return '';
+//     if (fs.existsSync(sourcePath)) {
+//         fs.copyFileSync(sourcePath, targetPath);
+//         console.log(`Icon '${iconName}.svg' copied from bundle to ${targetPath}`);
+//     } else {
+//         console.warn(`Icon '${iconName}.svg' not found in the bundle.`);
+//         vscode.window.showWarningMessage(`Icon '${iconName}.svg' not found in the bundle.`);
 //     }
 // }
 
-// // Create an icon preview from the SVG
-// function createIconPreview(iconPath: string): string {
-//     const svgContent = fs.readFileSync(iconPath, 'utf8');
-//     const svgBase64 = Buffer.from(svgContent).toString('base64');
-//     const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
-
-//     // Display preview
-//     vscode.window.showInformationMessage(`Preview: ${dataUri}`, { modal: true });
-//     return dataUri;
-// }
-
-// // Allow users to customize the icon (color, size)
-// async function customizeIcon(): Promise<string> {
-//     const color = await vscode.window.showInputBox({ placeHolder: 'Enter the fill color (e.g., #ff0000)' });
-//     const width = await vscode.window.showInputBox({ placeHolder: 'Enter the width (e.g., 24px)' });
-//     const height = await vscode.window.showInputBox({ placeHolder: 'Enter the height (e.g., 24px)' });
-
-//     const attributes: string[] = [];
-//     if (color) attributes.push(`fill="${color}"`);
-//     if (width) attributes.push(`width="${width}"`);
-//     if (height) attributes.push(`height="${height}"`);
-
-//     return attributes.join(' ');
-// }
-
-// // Optimize the SVG to reduce file size
-// function optimizeSvg(svgContent: string): string {
-//     const optimizedSvg = optimize(svgContent, {
-//         multipass: true,
-//         plugins: [
-//             {
-//                 name: 'preset-default',
-//                 params: {
-//                     overrides: {
-//                         removeViewBox: false, // Disable removeViewBox plugin
-//                     },
-//                 },
-//             },
-//         ],
-//     });
-//     return optimizedSvg.data;
-// }
-
 // // Deactivate function
-// export function deactivate() {}
-
-
-
-// import * as vscode from 'vscode';
-// import * as path from 'path';
-// import * as fs from 'fs';
-// import axios from 'axios'; // For web scraping
-// import { optimize } from 'svgo'; // For SVG optimization
-
-// // Enum for different icon types and packs
-// enum IconType {
-//     Outline = 'outline',
-//     Duotone = 'duotone',
-//     Colored = 'colored',
-//     Solid = 'solid'
+// export function deactivate() {
+//     console.log('SVG Icon Extension deactivated.');
 // }
 
-// enum IconPack {
-//     Material = 'material',
-//     FontAwesome = 'fontawesome',
-//     Feather = 'feather',
-//     Custom = 'custom' // For external or custom icon packs
-// }
 
-// // Main function to activate the extension
-// export function activate(context: vscode.ExtensionContext) {
-//     let disposable = vscode.commands.registerCommand('svg-icons-extension.searchIcons', async () => {
+//? Added autocomp
 
-//         // Ensure icon directories are created
-//         const iconBasePath = ensureIconDirectories(context.extensionPath);
-
-//         // Choose the icon pack first
-//         const iconPack = await vscode.window.showQuickPick(
-//             Object.keys(IconPack),
-//             { placeHolder: 'Choose an icon pack (Material, FontAwesome, Feather, etc.)' }
-//         );
-
-//         if (!iconPack) return; // User cancelled
-
-//         // Choose the icon type
-//         const iconType = await vscode.window.showQuickPick(
-//             Object.keys(IconType),
-//             { placeHolder: 'Choose an icon type (outline, duotone, colored, solid)' }
-//         );
-
-//         if (!iconType) return; // User cancelled
-
-//         // Prompt the user for icon name
-//         const iconName = await vscode.window.showInputBox({
-//             placeHolder: 'Enter the icon name (e.g., user, home, camera)',
-//         });
-
-//         if (!iconName) return; // User cancelled
-
-//         // Show icon previews (by loading icons and creating previews)
-//         const fullIconPath = path.join(iconBasePath, iconPack.toLowerCase(), iconType.toLowerCase(), `${iconName}.svg`);
-//         if (!fs.existsSync(fullIconPath)) {
-//             vscode.window.showErrorMessage(`Icon '${iconName}' not found in the selected pack!`);
-//             return;
-//         }
-
-//         // Load icon preview
-//         const iconPreview = createIconPreview(fullIconPath);
-
-//         // Customize the icon (color, size, etc.)
-//         const customAttributes = await customizeIcon();
-
-//         // Insert the relative path automatically
-//         const iconPath = path.relative(vscode.workspace.rootPath || '', fullIconPath);
-
-//         // Insert into the editor
-//         const editor = vscode.window.activeTextEditor;
-//         if (editor) {
-//             editor.edit(editBuilder => {
-//                 editor.selections.forEach(selection => {
-//                     editBuilder.replace(selection, `<img src="${iconPath}" ${customAttributes}/>`); // Insert the path with customization
-//                 });
-//             });
-//             vscode.window.showInformationMessage(`Icon inserted with customization!`);
-//         }
-//     });
-
-//     // Add command to list available icons
-//     let listIconsCommand = vscode.commands.registerCommand('svg-icons-extension.listIcons', async () => {
-//         const iconType = await vscode.window.showQuickPick(Object.keys(IconType), { placeHolder: 'Choose an icon type' });
-//         if (iconType) {
-//             const iconDir = path.join(context.extensionPath, 'assets', 'icons', iconType.toLowerCase());
-//             if (fs.existsSync(iconDir)) {
-//                 const icons = fs.readdirSync(iconDir).filter(file => file.endsWith('.svg')).map(file => file.replace('.svg', ''));
-//                 vscode.window.showInformationMessage(`Available icons in '${iconType}': ${icons.join(', ')}`);
-//             } else {
-//                 vscode.window.showErrorMessage(`No icons found for type '${iconType}'.`);
-//             }
-//         }
-//     });
-
-//     context.subscriptions.push(disposable, listIconsCommand);
-// }
-
-// // Ensure the required icon directories exist, create them if necessary
-// function ensureIconDirectories(basePath: string): string {
-//     const iconDirPath = path.join(basePath, 'assets', 'icons');
-//     Object.values(IconPack).forEach(pack => {
-//         Object.values(IconType).forEach(type => {
-//             const dirPath = path.join(iconDirPath, pack.toLowerCase(), type.toLowerCase());
-//             if (!fs.existsSync(dirPath)) {
-//                 fs.mkdirSync(dirPath, { recursive: true });
-//             }
-//         });
-//     });
-//     return iconDirPath;
-// }
-
-// // Create an icon preview from the SVG
-// function createIconPreview(iconPath: string): string {
-//     const svgContent = fs.readFileSync(iconPath, 'utf8');
-//     const svgBase64 = Buffer.from(svgContent).toString('base64');
-//     const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
-
-//     // Display preview
-//     vscode.window.showInformationMessage(`Preview: ${dataUri}`, { modal: true });
-//     return dataUri;
-// }
-
-// // Allow users to customize the icon (color, size)
-// async function customizeIcon(): Promise<string> {
-//     const color = await vscode.window.showInputBox({ placeHolder: 'Enter the fill color (e.g., #ff0000)' });
-//     const width = await vscode.window.showInputBox({ placeHolder: 'Enter the width (e.g., 24px)' });
-//     const height = await vscode.window.showInputBox({ placeHolder: 'Enter the height (e.g., 24px)' });
-
-//     const attributes: string[] = [];
-//     if (color) attributes.push(`fill="${color}"`);
-//     if (width) attributes.push(`width="${width}"`);
-//     if (height) attributes.push(`height="${height}"`);
-
-//     return attributes.join(' ');
-// }
-
-// // Optimize the SVG to reduce file size
-// function optimizeSvg(svgContent: string): string {
-//     const optimizedSvg = optimize(svgContent, {
-//         multipass: true,
-//         plugins: [
-//             {
-//                 name: 'preset-default',
-//                 params: {
-//                     overrides: {
-//                         removeViewBox: false, // Disable removeViewBox plugin
-//                     },
-//                 },
-//             },
-//         ],
-//     });
-//     return optimizedSvg.data;
-// }
-
-// // Deactivate function
-// export function deactivate() {}
-
-
-
-//? auto dir create
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as fse from 'fs-extra';
 
 // Enum for different icon types
 enum IconType {
@@ -402,12 +117,16 @@ enum IconType {
     Solid = 'solid'
 }
 
-// Main function to activate extension
+// Main function to activate the extension
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('svg-icons-extension.searchIcons', async () => {
+    console.log('SVG Icon Extension activated.');
 
-        // Ensure icon directories are created in the Flutter project, not the extension directory
-        const iconBasePath = ensureIconDirectories();
+    // Register the search icon command
+    let searchCommand = vscode.commands.registerCommand('svg-icons-extension.searchIcons', async () => {
+        console.log('Search Icons command executed.');
+
+        // Ensure icon directories are created
+        const iconBasePath = ensureIconDirectories(context.extensionPath);
 
         // Prompt the user for icon type
         const iconType = await vscode.window.showQuickPick(
@@ -419,22 +138,30 @@ export function activate(context: vscode.ExtensionContext) {
             return; // User cancelled the operation
         }
 
-        // Prompt the user for icon name
-        const iconName = await vscode.window.showInputBox({
-            placeHolder: 'Enter the icon name (e.g., user, home, camera)',
-        });
-
-        if (!iconName) {
-            return; // User cancelled the operation
-        }
-
-        // Construct the icon path based on the type and name
-        const iconPath = path.join('assets', 'icons', iconType.toLowerCase(), `${iconName}.svg`);
-        const fullIconPath = path.join(iconBasePath, iconType.toLowerCase(), `${iconName}.svg`);
-
-        // Insert the relative icon path into the active editor
         const editor = vscode.window.activeTextEditor;
         if (editor) {
+            const completionItems = await getIconCompletionItems(iconType.toLowerCase(), context.extensionPath);
+
+            const iconName = await vscode.window.showQuickPick(
+                completionItems.map(item => ({
+                    label: item.label.toString(),
+                    description: `Preview: ![${item.label}](${item.documentation})`
+                })),
+                { placeHolder: 'Start typing the icon name...' }
+            );
+
+            if (!iconName) {
+                return; // User cancelled the operation
+            }
+
+            const iconPath = path.join('assets', 'icons', iconType.toLowerCase(), `${iconName.label}.svg`);
+            const fullIconPath = path.join(iconBasePath, iconType.toLowerCase(), `${iconName.label}.svg`);
+
+            // Check if the icon exists; if not, copy it from the bundled icons
+            if (!fs.existsSync(fullIconPath)) {
+                copyIconFromBundle(iconType.toLowerCase(), iconName.label, fullIconPath, context.extensionPath);
+            }
+
             editor.edit(editBuilder => {
                 editor.selections.forEach(selection => {
                     editBuilder.replace(selection, iconPath); // Insert the relative path
@@ -444,11 +171,54 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(searchCommand);
+
+    // Register icon completion provider for supported languages
+    const iconCompletionProvider = vscode.languages.registerCompletionItemProvider(
+        ['html', 'dart', 'typescript', 'javascript'],
+        {
+            provideCompletionItems: async (document: vscode.TextDocument, position: vscode.Position) => {
+                const lineText = document.lineAt(position).text;
+                const iconTypeMatch = Object.keys(IconType).find(type => lineText.includes(type));
+
+                if (!iconTypeMatch) {
+                    return [];
+                }
+
+                const iconType = iconTypeMatch.toLowerCase();
+                const completionItems = await getIconCompletionItems(iconType, context.extensionPath);
+
+                return completionItems;
+            }
+        },
+        ':' // Trigger autocomplete when the user types `:` after typing the icon type
+    );
+
+    context.subscriptions.push(iconCompletionProvider);
 }
 
-// Ensure the required icon directories exist, create them if necessary
-function ensureIconDirectories(): string {
+// Get the icon completion items with preview
+async function getIconCompletionItems(iconType: string, extensionPath: string): Promise<vscode.CompletionItem[]> {
+    const iconDir = path.join(extensionPath, 'assets', 'icons', iconType);
+    const iconFiles = fs.readdirSync(iconDir);
+
+    const completionItems: vscode.CompletionItem[] = iconFiles.map(iconFile => {
+        const iconName = path.basename(iconFile, '.svg');
+        const iconPath = vscode.Uri.file(path.join(iconDir, iconFile));
+        const completionItem = new vscode.CompletionItem(iconName, vscode.CompletionItemKind.File);
+
+        // Add icon preview in detail
+        completionItem.detail = iconName;
+        completionItem.documentation = new vscode.MarkdownString(`![${iconName}](${iconPath.toString()})`);
+
+        return completionItem;
+    });
+
+    return completionItems;
+}
+
+// Ensure the required icon directories exist, create them if necessary, and copy bundled icons
+function ensureIconDirectories(extensionPath: string): string {
     // Get the root path of the current Flutter project
     const workspaceFolder = vscode.workspace.workspaceFolders ? vscode.workspace.workspaceFolders[0].uri.fsPath : undefined;
     if (!workspaceFolder) {
@@ -463,11 +233,47 @@ function ensureIconDirectories(): string {
         const dirPath = path.join(iconDirPath, type.toLowerCase());
         if (!fs.existsSync(dirPath)) {
             fs.mkdirSync(dirPath, { recursive: true });
+
+            // Copy the bundled icons from the extension to the Flutter project
+            const bundledIconPath = path.join(extensionPath, 'assets', 'icons', type.toLowerCase());
+            if (fs.existsSync(bundledIconPath)) {
+                fse.copySync(bundledIconPath, dirPath); // Copy icons recursively
+            }
         }
     });
 
     return iconDirPath;
 }
 
+// Format the icon path based on the language of the current file
+function formatIconPathForLanguage(language: string, iconPath: string): string {
+    switch (language) {
+        case 'html':
+            return `<img src="${iconPath}" alt="icon">`;
+        case 'dart': // For Flutter
+            return `SvgPicture.asset('${iconPath}');`;
+        case 'javascript':
+        case 'typescript':
+            return `import Icon from '${iconPath}';`;
+        default:
+            return iconPath;
+    }
+}
+
+// Copy an icon from the bundled assets to the required directory
+function copyIconFromBundle(iconType: string, iconName: string, targetPath: string, basePath: string) {
+    const sourcePath = path.join(basePath, 'assets', 'bundle', iconType, `${iconName}.svg`);
+
+    if (fs.existsSync(sourcePath)) {
+        fs.copyFileSync(sourcePath, targetPath);
+        console.log(`Icon '${iconName}.svg' copied from bundle to ${targetPath}`);
+    } else {
+        console.warn(`Icon '${iconName}.svg' not found in the bundle.`);
+        vscode.window.showWarningMessage(`Icon '${iconName}.svg' not found in the bundle.`);
+    }
+}
+
 // Deactivate function
-export function deactivate() {}
+export function deactivate() {
+    console.log('SVG Icon Extension deactivated.');
+}
