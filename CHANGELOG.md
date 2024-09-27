@@ -2,11 +2,15 @@
 # SVG Icon Extension Changelog
 
 All notable changes to this project will be documented in this file.
-## [1.0.05] - 2024-09-28
+## [1.0.6] - 2024-09-28
+- Minor updates
+- Updated Readme
+
+## [1.0.5] - 2024-09-28
 - Refactor icon name to remove [(copy 1)]
 - Removed duplicates
 
-## [1.0.04] - 2024-09-27
+## [1.0.4] - 2024-09-27
 
 ### Added
 - Autocomplete: Type `:iconType` (e.g., `bold:iconName`) to get autocompletion and preview for icons.
@@ -28,7 +32,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Issue with duplicate entries being added to pubspec.yaml
 
-## [1.0.03] - 2024-09-25
+## [1.0.3] - 2024-09-25
 
 ### Added
 - Support for accessing local SVG icons in multiple categories: outline, duotone, colored, solid.
@@ -38,13 +42,13 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Removed web scraping functionality for external SVG icons.
 
-## [1.0.02] - 2024-09-20
+## [1.0.2] - 2024-09-20
 
 ### Added
 - Web scraping functionality for fetching SVG icons from external sources.
 - Basic snippet support for HTML and JavaScript.
 
-## [1.0.01] - 2024-09-15
+## [1.0.1] - 2024-09-15
 
 ### Added
 - Initial release with basic support for searching SVG icons.

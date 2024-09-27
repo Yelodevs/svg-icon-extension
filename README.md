@@ -1,11 +1,27 @@
 # SVG Icon Extension for VS Code
 
+[![Version](https://img.shields.io/visual-studio-marketplace/v/Linxford.svg-icon-extension)](https://marketplace.visualstudio.com/items?itemName=Linxford.svg-icon-extension)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/Linxford.svg-icon-extension)](https://marketplace.visualstudio.com/items?itemName=Linxford.svg-icon-extension)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/Linxford.svg-icon-extension)](https://marketplace.visualstudio.com/items?itemName=Linxford.svg-icon-extension)
+[![OpenVSX Downloads](https://shields.io/open-vsx/dt/Linxford/svg-icon-extension?label=OpenVSX%20Downloads)](https://open-vsx.org/extension/Linxford/svg-icon-extension)
+
 ## Overview
 
 The SVG Icon Extension for VS Code is designed to streamline the process of adding SVG icons to your projects. It provides an easy-to-use interface for browsing, selecting, and inserting SVG icons directly into your code.
 
-## Features
+# Support
 
+**SVG ICON EXTENSION** is an extension created for **Visual Studio Code**. If you find it useful, please consider supporting it.
+
+<table align="center" width="60%" border="0">
+  <tr>
+    <td>
+      <a title="GitHub Sponsors" href="https://github.com/sponsors/linxford"><img src="https://raw.githubusercontent.com/alefragnani/oss-resources/master/images/button-become-a-sponsor-rounded-small.png"/></a>
+    </td>
+  </tr>
+</table>
+
+## Features
 - Browse and search SVG icons by type (outline, duotone, colored, solid)
 - Preview icons before insertion
 - Automatically insert selected icons into your code
@@ -13,12 +29,11 @@ The SVG Icon Extension for VS Code is designed to streamline the process of addi
 - Automatically update pubspec.yaml with new icon directories
 -Autocompletion and preview for icons.
 
-## Installation
+## Installation and Configuration
+You should follow the official documentation to:
 
-1. Open VS Code
-2. Go to the Extensions view (Ctrl+Shift+X)
-3. Search for "SVG Icon Extension"
-4. Click Install
+- [Install the extension](https://code.visualstudio.com/docs/editor/extension-gallery)
+- [Modify its settings](https://code.visualstudio.com/docs/getstarted/settings)
 
 ## Usage
 1. **Search for Icons**:
@@ -36,18 +51,11 @@ The SVG Icon Extension for VS Code is designed to streamline the process of addi
 
 3. **Use Keyboard shortcut**
 - ctrl+shift+i
-
-## Requirements
-
-- Visual Studio Code 1.60.0 or higher
-
 ## Extension Settings
-
 This extension doesn't add any VS Code settings.
 
 ## Known Issues
-
-Please report any issues on the GitHub repository.
+Please report any issues on the [GitHub repository](https://github.com/Yelodevs/svg-icon-extension/issues).
 
 ## Further Updates
 Future updates will include:
@@ -60,7 +68,7 @@ Future updates will include:
 If you have suggestions or find issues with the extension, feel free to open an issue or a pull request on the [GitHub repository](https://github.com/Yelodevs/svg-icon-extension).
 
 ## Credits
-Kudos to all contributors that made this extension what it is.
+- Kudos to all contributors that made this extension what it is.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

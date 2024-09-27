@@ -3,21 +3,60 @@
     "displayName": "SVG Icon Extension",
     "description": "Easily search and insert SVG icons from multiple sources.",
     "publisher": "Linxford",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "icon": "assets/icon.png",
     "engines": {
         "vscode": "^1.93.0"
     },
+    "author": {
+		"name": "Linxford Kwabena"
+	},
     "categories": [
         "Other",
         "Snippets"
     ],
+    "keywords": [
+		"svg",
+		"project",
+		"icons",
+		"flutter svg",
+		"svg icons",
+		"manage",
+		"mercurial",
+		"futlter",
+		"dart",
+		"color",
+		"andriod",
+		"ios",
+		"yml",
+		"json"
+	],
+    "extensionKind": [
+		"ui",
+		"workspace"
+	],
+    "homepage": "https://github.com/Yelodevs/svg-icon-extension",
+    "bugs": {
+		"url": "https://github.com/Yelodevs/svg-icon-extension/issues",
+        "email": "linxford7@gmail.com"
+	},
+	"sponsor": {
+		"url": "https://github.com/sponsors/linxford"
+	},
     "activationEvents": [
         "onLanguage:html",
         "onLanguage:dart",
         "onLanguage:typescript",
         "onLanguage:javascript"
     ],
+    "capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
+		},
+		"virtualWorkspaces": {
+			"supported": true
+		}
+	},
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
