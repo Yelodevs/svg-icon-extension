@@ -3,16 +3,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.04] - 2024-09-26
+## [1.0.04] - 2024-09-27
 
 ### Added
-- Autocomplete: Type `:iconType` (e.g., `solid:iconName`) to get autocompletion and preview for icons.
+- Autocomplete: Type `:iconType` (e.g., `bold:iconName`) to get autocompletion and preview for icons.
 - Feature to browse and search SVG icons by type (outline, duotone, colored, solid)
 - Icon preview functionality in the selection menu
 - Management of icon assets in Flutter projects
 - Automatically creates icon directories in the Flutter project's `assets/icons` folder.
 - Updates `pubspec.yaml` to include new icon directories for assets.
 - Easy insertion of SVG icons into code with previews.
+- Added more svg icons of diff types
+- Icons structure changed to [`outline, linear, bold, broken, twotone`]
 
 
 ### Changed
