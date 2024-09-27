@@ -2,6 +2,9 @@
 # SVG Icon Extension Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.0.05] - 2024-09-28
+- Refactor icon name to remove [(copy 1)]
+- Removed duplicates
 
 ## [1.0.04] - 2024-09-27
 

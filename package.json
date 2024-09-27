@@ -3,7 +3,7 @@
     "displayName": "SVG Icon Extension",
     "description": "Easily search and insert SVG icons from multiple sources.",
     "publisher": "Linxford",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "icon": "assets/icon.png",
     "engines": {
         "vscode": "^1.93.0"
